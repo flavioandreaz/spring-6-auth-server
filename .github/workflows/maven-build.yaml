@@ -23,6 +23,9 @@ jobs:
           distribution: 'temurin'
           architecture: 'x64'
           cache: 'maven'
+          
+      - name: Permitir execução do mvnw
+        run: chmod +x ./mvnw
 
       - name: Build with Maven
         run: ./mvnw -B clean verify --no-transfer-progress

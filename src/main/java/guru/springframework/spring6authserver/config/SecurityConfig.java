@@ -135,7 +135,7 @@ public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
-       // return AuthorizationServerSettings.builder().build();
+        System.out.println("32131231");
          return AuthorizationServerSettings.builder()
             .issuer("http://auth-server:9000")
             .build();
