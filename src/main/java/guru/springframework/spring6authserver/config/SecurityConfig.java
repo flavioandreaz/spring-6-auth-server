@@ -135,10 +135,10 @@ public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
-        System.out.println("321311ggss");
+        System.out.println("1234");
          return AuthorizationServerSettings.builder()
             .issuer("http://auth-server:9000")
-            .build();
+            .build(); 
     }
 }
 
