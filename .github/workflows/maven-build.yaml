@@ -33,9 +33,22 @@ jobs:
       - name: Build Docker image
         run: docker build -t spring-6-auth-server:latest .
 
+      - name: Tag Docker image para GHCR
+        run: docker tag spring-6-auth-server ghcr.io/flavioandreaz/spring-6-auth-server:latest
+
+      - name: Login no GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push Docker image para GHCR
+        run: docker push ghcr.io/flavioandreaz/spring-6-auth-server:latest
+
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action/linux@v2
         if: always()
         with:
           files: |
-            ./target/surefire-reports/TEST-*.xml
+            ./target/surefire
