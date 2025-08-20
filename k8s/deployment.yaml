@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: spring-6-auth-server
 spec:
-  replicas: 1
+  replicas: 1 
   selector:
     matchLabels:
       app: spring-6-auth-server
