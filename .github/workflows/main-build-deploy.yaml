@@ -1,5 +1,11 @@
 name: Build and Deploy on Main
 
+permissions:
+  contents: write
+  packages: write
+  issues: read
+  pull-requests: read
+
 on:
   push:
     branches:
