@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-6-auth-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-6-auth-server
+  template:
+    metadata:
+      labels:
+        app: spring-6-auth-server
+    spec:
+      containers:
+        - name: spring-6-auth-server
+          image: flavioandreaz/spring-6-auth-server:latest
+          ports:
+            - containerPort: 9000
+          env:
+            # Exemplo de variável de ambiente
+            # - name: SPRING_PROFILES_ACTIVE
+            #   value: "prod"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-6-auth-server
+spec:
+  type: NodePort
+  selector:
+    app: spring-6-auth-server
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000
+      nodePort: 30900
