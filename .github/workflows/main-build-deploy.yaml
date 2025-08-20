@@ -35,8 +35,19 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Tag Docker image para Docker Hub
-        run: docker tag spring-6-auth-server ${{ secrets.DOCKER_USERNAME }}/spring-6-auth-server:latest
+      - name: Create tag (minor por padrão)
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: minor
 
-      - name: Push Docker image para Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/spring-6-auth-server:latest
+      - name: Tag Docker image com versão
+        run: |
+          docker tag spring-6-auth-server ${{ secrets.DOCKER_USERNAME }}/spring-6-auth-server:${{ steps.tag_version.outputs.new_tag }}
+          docker tag spring-6-auth-server ${{ secrets.DOCKER_USERNAME }}/spring-6-auth-server:latest
+
+      - name: Push Docker image com versão
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/spring-6-auth-server:${{ steps.tag_version.outputs.new_tag }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/spring-6-auth-server:latest
