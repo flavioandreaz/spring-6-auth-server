@@ -56,5 +56,9 @@ jobs:
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
+      - name: Undeploy serviço/deployment antigos (ignora erro se não existir)
+        run: |
+          kubectl delete service auth-server --ignore-not-found
+          kubectl delete deployment auth-server --ignore-not-found
       - name: Deploy no Kubernetes local
         run: kubectl apply -f k8s/deployment.yaml
