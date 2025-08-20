@@ -1,19 +1,15 @@
-name: Build Spring Boot with Maven
+name: Build and Deploy on Main
+
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    paths-ignore:
-      - '**.md'
-      - '.github/workflows/**/*'
+  push:
+    branches:
+      - main
+
 jobs:
-  build_and_verify:
-    name: Run Merge checks
+  build_and_deploy:
     runs-on: ubuntu-latest
-    permissions:
-      checks: write
-      pull-requests: write
     steps:
-      - name: Checkout the repo
+      - name: Checkout do código
         uses: actions/checkout@v4
 
       - name: Setup Java 21
@@ -23,11 +19,11 @@ jobs:
           distribution: 'temurin'
           architecture: 'x64'
           cache: 'maven'
-          
+
       - name: Permitir execução do mvnw
         run: chmod +x ./mvnw
 
-      - name: Build with Maven
+      - name: Build e Testes
         run: ./mvnw -B clean verify --no-transfer-progress
 
       - name: Build Docker image
@@ -44,10 +40,3 @@ jobs:
 
       - name: Push Docker image para Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/spring-6-auth-server:latest
-
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action/linux@v2
-        if: always()
-        with:
-          files: |
-            ./target/surefire-reports/TEST
